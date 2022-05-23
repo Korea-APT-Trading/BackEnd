@@ -35,19 +35,19 @@
 	</insert>
 	
 	<!-- 게시글 수정 -->
-	<update id="updateBoard" parameterType="board">
+	<update id="updateBoard" parameterType="Map">
 		update board 
-		   set subject = #{subject}, 
-		   	   userid = #{userid}, 
-		   	   content = #{content}
-		 where articleno = #{articleno}
+		   set subject = #{board.subject},
+		   	   userid = #{board.userid},
+		   	   content = #{board.content}
+		 where articleno = #{board.articleno} and userid = #{userid}
 	</update>
 
 	<!-- 게시글 삭제 -->
-	<delete id="deleteBoard" parameterType="int">
+	<delete id="deleteBoard" parameterType="Map">
 		delete 
 		from board 
-		where articleno = #{articleno}
+		where articleno = #{articleno} and userid = #{userid}
 	</delete>
 
 </mapper>
