@@ -1,5 +1,6 @@
 package com.ssafy.vue.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 public interface JwtService {
@@ -8,5 +9,5 @@ public interface JwtService {
 	Map<String, Object> get(String key);
 	String getUserId();
 	boolean isUsable(String jwt);
-	
+	String getUserIdByToken(String token) throws UnsupportedEncodingException;
 }
