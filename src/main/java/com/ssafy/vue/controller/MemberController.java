@@ -39,6 +39,7 @@ public class MemberController {
     @ApiOperation(value = "회원가입", notes = "회원가입을 진행하고 결과메시지를 반환한다.", response = String.class)
     @PostMapping
     public ResponseEntity<Map<String, Object>> registerMember(@Valid @RequestBody @ApiParam(value = "회원가입시 필요한 회원정보(아이디, 비밀번호,회원이름,이메일).", required = true) MemberDto memberDto) throws Exception {
+        logger.debug("회원가입 호출");
         Map<String, Object> resultMap = new HashMap<>();
 
         if (memberService.checkMemberIsDuplicate(memberDto.getUserid())) {
