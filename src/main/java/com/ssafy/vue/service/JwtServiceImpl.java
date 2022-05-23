@@ -76,6 +76,20 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
+    public String getUserIdByToken(String token) throws UnsupportedEncodingException {
+
+        Jws<Claims> claims = null;
+
+        claims = Jwts.parser()
+                     .setSigningKey(SALT.getBytes("UTF-8"))
+                     .parseClaimsJws(token);
+
+        String userId = (String) claims.getBody().get("userid");
+
+        return userId;
+    }
+
+    @Override
     public Map<String, Object> get(String key) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
                 .getRequest();
