@@ -87,6 +87,8 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(
             @RequestBody @ApiParam(value = "로그인 시 필요한 회원정보(아이디, 비밀번호).", required = true) MemberDto memberDto) {
+    	System.out.println(memberDto.toString());
+    	System.out.println(memberDto.getUserpwd());
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         try {
