@@ -1,7 +1,12 @@
 package com.ssafy.vue.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import com.ssafy.vue.service.JwtService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +27,8 @@ import com.ssafy.vue.service.BoardService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Api("BoardController V1")
 @RestController
 @RequestMapping("/board")
@@ -35,6 +42,9 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 
+	@Autowired
+	private JwtService jwtService;
+
     @ApiOperation(value = "게시판 글목록", notes = "모든 게시글의 정보를 반환한다.", response = List.class)
 	@GetMapping
 	public ResponseEntity<List<Board>> retrieveBoard() throws Exception {
@@ -46,6 +56,7 @@ public class BoardController {
 	@GetMapping("{articleno}")
 	public ResponseEntity<Board> detailBoard(@PathVariable int articleno) {
 		logger.debug("detailBoard - 호출");
+		boardService.updateHit(articleno);
 		return new ResponseEntity<Board>(boardService.detailBoard(articleno), HttpStatus.OK);
 	}
 
@@ -61,10 +72,21 @@ public class BoardController {
 
     @ApiOperation(value = "게시판 글정보 수정", notes = "글번호에 해당하는 게시글의 정보를 수정한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
 	@PutMapping("{articleno}")
-	public ResponseEntity<String> updateBoard(@RequestBody Board board) {
+	public ResponseEntity<String> updateBoard(@RequestBody Board board, HttpServletRequest request) throws Exception {
 		logger.debug("updateBoard - 호출");
-		
-		if (boardService.updateBoard(board)) {
+
+		String token = request.getHeader("access-token");
+
+		logger.debug("token : {}",token);
+		if(!jwtService.isUsable(token)){
+			return new ResponseEntity<String>(FAIL, HttpStatus.UNAUTHORIZED);
+		}
+
+		String userId = jwtService.getUserIdByToken(token);
+
+		logger.debug("userId : {}",userId);
+
+		if (boardService.updateBoard(board,userId)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
@@ -72,11 +94,24 @@ public class BoardController {
 
     @ApiOperation(value = "게시판 글삭제", notes = "글번호에 해당하는 게시글의 정보를 삭제한다. 그리고 DB삭제 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
 	@DeleteMapping("{articleno}")
-	public ResponseEntity<String> deleteBoard(@PathVariable int articleno) {
+	public ResponseEntity<String> deleteBoard(@PathVariable int articleno,  HttpServletRequest request) throws Exception {
 		logger.debug("deleteBoard - 호출");
-		if (boardService.deleteBoard(articleno)) {
+
+		//발행된 토큰이 존재하지 않는다면
+
+		String token = request.getHeader("access-token");
+
+		logger.debug("token : {}",token);
+		if(!jwtService.isUsable(token)){
+			return new ResponseEntity<String>(FAIL, HttpStatus.UNAUTHORIZED);
+		}
+
+		String userId = jwtService.getUserIdByToken(token);
+
+		logger.debug("userId : {}",userId);
+		if (boardService.deleteBoard(articleno,userId)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
-		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
 	}
 }
