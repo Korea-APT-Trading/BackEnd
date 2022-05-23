@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,20 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 
+	@ApiOperation(value = "회원가입", notes = "회원가입을 진행하고 결과메시지를 반환한다.", response = String.class)
+	@PostMapping
+	public ResponseEntity<String> registerMember(@Valid @RequestBody @ApiParam(value = "회원가입시 필요한 회원정보(아이디, 비밀번호,회원이름,이메일).", required = true) MemberDto memberDto) throws Exception {
+
+		if (memberService.checkMemberIsDuplicate(memberDto.getUserid())) {
+			return ResponseEntity.status(HttpStatus.CONFLICT)
+								 .body("회원 데이터 중복 발생");
+		}
+
+		memberService.insertInfo(memberDto);
+		return ResponseEntity.status(HttpStatus.CREATED)
+							 .body("회원가입 완료");
+	}
+
 	@ApiOperation(value = "로그인", notes = "Access-token과 로그인 결과 메세지를 반환한다.", response = Map.class)
 	@PostMapping("/login")
 	public ResponseEntity<Map<String, Object>> login(
@@ -71,14 +86,14 @@ public class MemberController {
 	public ResponseEntity<Map<String, Object>> getInfo(
 			@PathVariable("userid") @ApiParam(value = "인증할 회원의 아이디.", required = true) String userid,
 			HttpServletRequest request) {
-//		logger.debug("userid : {} ", userid);
+		logger.debug("userid : {} ", userid);
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		if (jwtService.isUsable(request.getHeader("access-token"))) {
 			logger.info("사용 가능한 토큰!!!");
 			try {
 //				로그인 사용자 정보.
-				MemberDto memberDto = memberService.userInfo(userid);
+				MemberDto memberDto = memberService.selectInfo(userid);
 				resultMap.put("userInfo", memberDto);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
@@ -94,5 +109,7 @@ public class MemberController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+
+
 
 }
