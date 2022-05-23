@@ -54,13 +54,13 @@ public class MemberController {
     }
 
     @ApiOperation(value = "회원탈퇴", notes = "회원탈퇴를 진행하고 결과메시지를 반환한다.", response = String.class)
-    @DeleteMapping
-    public ResponseEntity<Map<String, Object>> deleteMember(@RequestBody @ApiParam(value = "회원탈퇴시 필요한 회원정보(아이디).", required = true) MemberDto memberDto) throws Exception {
+    @DeleteMapping("/{userid}")
+    public ResponseEntity<Map<String, Object>> deleteMember(@PathVariable @ApiParam(value = "회원탈퇴시 필요한 회원정보(아이디).", required = true) String userid) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
-        int result = memberService.deleteInfo(memberDto.getUserid());
+        int result = memberService.deleteInfo(userid);
         if (result > 0) {
             resultMap.put("message", SUCCESS);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+            return ResponseEntity.status(HttpStatus.OK)
                                  .body(resultMap);
         }
         resultMap.put("message", FAIL);
@@ -73,9 +73,10 @@ public class MemberController {
     public ResponseEntity<Map<String, Object>> updateMember(@Valid @RequestBody @ApiParam(value = "회원변경시 필요한 회원정보는 선택적으로 변경됨.", required = true) MemberDto memberDto) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
         int result = memberService.updateInfo(memberDto);
+
         if (result > 0) {
             resultMap.put("message", SUCCESS);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+            return ResponseEntity.status(HttpStatus.OK)
                                  .body(resultMap);
         }
         resultMap.put("message", FAIL);
