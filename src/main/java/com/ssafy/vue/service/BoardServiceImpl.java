@@ -1,6 +1,8 @@
 package com.ssafy.vue.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,13 +39,19 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	@Transactional
-	public boolean updateBoard(Board board) {
-		return boardMapper.updateBoard(board) == 1;
+	public boolean updateBoard(Board board, String userId) {
+		Map<String, Object> updateInfo = new HashMap<>();
+		updateInfo.put("board", board);
+		updateInfo.put("userid",userId);
+		return boardMapper.updateBoard(updateInfo) == 1;
 	}
 
 	@Override
 	@Transactional
-	public boolean deleteBoard(int articleno) {
-		return boardMapper.deleteBoard(articleno) == 1;
+	public boolean deleteBoard(int articleno, String userId) {
+		Map<String,Object> deleteInfo = new HashMap<>();
+		deleteInfo.put("articleno",articleno);
+		deleteInfo.put("userid",userId);
+		return boardMapper.deleteBoard(deleteInfo) == 1;
 	}
 }
