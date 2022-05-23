@@ -14,4 +14,6 @@ public interface BoardMapper {
 	public int insertBoard(Board board);
 	public int updateBoard(Map<String,Object> updateInfo);
 	public int deleteBoard(Map<String,Object> deleteInfo);
+	public int forceUpdateBoard(Board board);
+	public int forceDeleteBoard(int articleno);
 }

@@ -50,5 +50,21 @@
 		where articleno = #{articleno} and userid = #{userid}
 	</delete>
 
+	<!-- 게시글 수정 -->
+	<update id="forceUpdateBoard" parameterType="board">
+		update board
+		set subject = #{subject},
+			userid = #{userid},
+			content = #{content}
+		where articleno = #{articleno}
+	</update>
+
+	<!-- 게시글 삭제 -->
+	<delete id="forceDeleteBoard" parameterType="int">
+		delete
+		from board
+		where articleno = #{articleno}
+	</delete>
+
 </mapper>
 

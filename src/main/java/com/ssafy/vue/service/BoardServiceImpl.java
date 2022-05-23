@@ -40,6 +40,9 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	@Transactional
 	public boolean updateBoard(Board board, String userId) {
+		if(userId.equals("admin")){
+			return boardMapper.forceUpdateBoard(board) ==1;
+		}
 		Map<String, Object> updateInfo = new HashMap<>();
 		updateInfo.put("board", board);
 		updateInfo.put("userid",userId);
@@ -49,6 +52,10 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	@Transactional
 	public boolean deleteBoard(int articleno, String userId) {
+		if(userId.equals("admin")){
+			return boardMapper.forceDeleteBoard(articleno) ==1;
+		}
+
 		Map<String,Object> deleteInfo = new HashMap<>();
 		deleteInfo.put("articleno",articleno);
 		deleteInfo.put("userid",userId);
