@@ -9,6 +9,6 @@ public interface BoardService {
 	public Board detailBoard(int articleno);
 	public void updateHit(int articleno);
 	public boolean writeBoard(Board board);
-	public boolean updateBoard(Board board);
-	public boolean deleteBoard(int articleno);
+	public boolean updateBoard(Board board,String userId);
+	public boolean deleteBoard(int articleno, String userId);
 }
