@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.vue.mapper.BoardCommentMapper">
+
+    <!-- 게시글 기준 댓글 전체 조회 -->
+    <select id="selectBoardCommentByArticleNo" resultType="boardComment">
+        select boardcommentno, articleno, userid, content, regtime
+        from boardcomment
+        where articleno = #{articleno}
+        order by boardcommentno desc
+    </select>
+
+
+    <!-- 게시글 등록 -->
+    <insert id="insertBoardComment" parameterType="boardComment">
+        insert into boardcomment(articleno, userid, content)
+        values (#{articleno}, #{userid}, #{content})
+    </insert>
+
+
+</mapper>
+
