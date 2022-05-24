@@ -47,6 +47,7 @@ class JwtServiceImplTest {
                      .setSigningKey(SALT.getBytes("UTF-8"))
                      .parseClaimsJws(token);
 
+        System.out.println(claims.getBody());
         Assertions.assertThat(claims.getBody().get("userid")).isEqualTo("junwoo");
     }
 
