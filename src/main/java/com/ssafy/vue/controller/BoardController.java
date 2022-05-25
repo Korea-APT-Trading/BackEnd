@@ -45,9 +45,6 @@ public class BoardController {
     private BoardService boardService;
 
     @Autowired
-    private BoardCommentService boardCommentService;
-
-    @Autowired
     private JwtService jwtService;
 
     @ApiOperation(value = "게시판 글목록", notes = "모든 게시글의 정보를 반환한다.", response = List.class)
@@ -69,9 +66,9 @@ public class BoardController {
     public ResponseEntity<Board> detailBoard(@PathVariable int articleno) {
         logger.debug("detailBoard - 호출");
         boardService.updateHit(articleno);
-        boardCommentService.SearchBoardCommentsByArticleNo(articleno)
-                           .stream()
-                           .forEach(System.out::println);
+//        boardCommentService.SearchBoardCommentsByArticleNo(articleno)
+//                           .stream()
+//                           .forEach(System.out::println);
         return new ResponseEntity<Board>(boardService.detailBoard(articleno), HttpStatus.OK);
     }
 
@@ -129,17 +126,4 @@ public class BoardController {
         }
         return new ResponseEntity<String>(FAIL, HttpStatus.OK);
     }
-
-	@ApiOperation(value = "게시판 댓글등록", notes = "새로운 게시글 정보를 입력한다. 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
-	@PostMapping("/comment")
-	public ResponseEntity<String> writeBoardComment(@RequestBody BoardComment boardComment) {
-		logger.debug("writeBoardComment - 호출");
-
-
-		if (boardCommentService.writeBoardComment(boardComment)) {
-			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
-		}
-		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
-
-	}
 }

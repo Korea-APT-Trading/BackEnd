@@ -1,9 +1,8 @@
 package com.ssafy.vue.mapper;
 
-import com.ssafy.vue.dto.Board;
-import com.ssafy.vue.dto.BoardComment;
-
 import java.util.List;
+
+import com.ssafy.vue.dto.BoardComment;
 
 public interface BoardCommentMapper {
     public List<BoardComment> selectBoardCommentByArticleNo(int articleno);

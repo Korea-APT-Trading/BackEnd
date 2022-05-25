@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class BoardCommentImpl implements BoardCommentService{
+public class BoardCommentServiceImpl implements BoardCommentService{
 
     @Autowired
     private BoardCommentMapper boardCommentMapper;
