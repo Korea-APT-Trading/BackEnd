@@ -21,8 +21,13 @@ public class BoardServiceImpl implements BoardService {
 	public List<Board> retrieveBoard() {
 		return boardMapper.selectBoard();
 	}
-    
-  	@Override
+
+	@Override
+	public List<Board> retrieveTopFiveHitBoard() {
+		return boardMapper.selectTopFiveHitBoard();
+	}
+
+	@Override
 	public boolean writeBoard(Board board) {
 		return boardMapper.insertBoard(board) == 1;
 	}

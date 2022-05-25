@@ -57,6 +57,13 @@ public class BoardController {
         return new ResponseEntity<List<Board>>(boardService.retrieveBoard(), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "게시판 글 5개 가져오기", notes = "조회수가 높은 게시글 5개를 가져옵니다.", response = List.class)
+    @GetMapping("/main")
+    public ResponseEntity<List<Board>> retrieveTopFiveHitBoard() throws Exception {
+        logger.debug("retrieveTopFiveHitBoard - 호출");
+        return new ResponseEntity<List<Board>>(boardService.retrieveTopFiveHitBoard(), HttpStatus.OK);
+    }
+
     @ApiOperation(value = "게시판 글보기", notes = "글번호에 해당하는 게시글의 정보를 반환한다.", response = Board.class)
     @GetMapping("{articleno}")
     public ResponseEntity<Board> detailBoard(@PathVariable int articleno) {
