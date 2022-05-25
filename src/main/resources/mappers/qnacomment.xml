@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.vue.mapper.QnaCommentMapper">
+
+	<select id="selectQnaComment" resultType="qnacomment">
+		select articleno, qnano, userid, content, regtime
+		from qnacomment
+		order by articleno desc
+	</select>
+	
+	<select id="selectQnaCommentByNo" resultType="qnacomment" parameterType="int">
+		select articleno, qnano, userid, content, regtime
+		from qnacomment where qnano = #{articleno}
+		order by regtime asc;
+	</select>
+
+	<insert id="insertQnaComment" parameterType="qnacomment">
+		insert into qnacomment(qnano, userid, content)
+		values(#{qnano}, #{userid}, #{content})
+	</insert>
+	
+	<update id="updateQnaComment" parameterType="qnacomment">
+		update qnacomment set
+		qnano = #{qnano},
+		userid = #{userid},
+		content = #{content}
+		where articleno = #{articleno}
+	</update>
+	
+	<delete id="deleteQna" parameterType="int">
+		delete
+		from qnacomment
+		where articleno = #{articleno}
+	</delete>
+</mapper>
