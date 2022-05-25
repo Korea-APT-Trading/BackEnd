@@ -42,13 +42,10 @@ class JwtServiceImplTest {
         String token = jwtService.create("userid", memberDto.getUserid(), "access-token");// key, data, subject
 
         //when
-        Jws<Claims> claims = null;
-        claims = Jwts.parser()
-                     .setSigningKey(SALT.getBytes("UTF-8"))
-                     .parseClaimsJws(token);
+        String userIdByToken = jwtService.getUserIdByToken(token);
 
-        System.out.println(claims.getBody());
-        Assertions.assertThat(claims.getBody().get("userid")).isEqualTo("junwoo");
+        //then
+        Assertions.assertThat(userIdByToken).isEqualTo("junwoo");
     }
 
     public MemberDto makeMemberDto() {
