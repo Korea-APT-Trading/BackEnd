@@ -70,9 +70,12 @@ public class MemberController {
     }
 
     @ApiOperation(value = "회원정보변경", notes = "회원정보를 변경하고 결과메시지를 반환한다.", response = String.class)
-    @PatchMapping
+    @PutMapping
     public ResponseEntity<Map<String, Object>> updateMember(@Valid @RequestBody @ApiParam(value = "회원변경시 필요한 회원정보는 선택적으로 변경됨.", required = true) MemberDto memberDto) throws Exception {
+        logger.debug("회원정보 변경 호출");
+        System.out.println(memberDto.getUserpwd());
         Map<String, Object> resultMap = new HashMap<>();
+
         int result = memberService.updateInfo(memberDto);
 
         if (result > 0) {
