@@ -64,13 +64,7 @@ public class JwtServiceImpl implements JwtService {
                                      .parseClaimsJws(jwt);
             return true;
         } catch (Exception e) {
-//			if (logger.isInfoEnabled()) {
-//				e.printStackTrace();
-//			} else {
             logger.error(e.getMessage());
-//			}
-//			throw new UnauthorizedException();
-//			개발환경
             return false;
         }
     }

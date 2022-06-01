@@ -55,7 +55,7 @@ class MemberServiceImplTest {
     }
 
     @Test
-    @DisplayName("회원가입 중복검사실패 테스트")
+    @DisplayName("회원가입 중복검사실패   테스트")
     public void memberIdDuplicateTest() throws Exception {
         //given
         MemberDto memberDto1 = makeMemberDto();
@@ -151,7 +151,6 @@ class MemberServiceImplTest {
         Assertions.assertThat(memberService.selectInfo(memberDto.getUserid()).getUsername()).isEqualTo("changed");
     }
 
-
     public MemberDto makeMemberDto() {
         MemberDto memberDto = new MemberDto();
         memberDto.setUserid("junwoo");
@@ -160,5 +159,7 @@ class MemberServiceImplTest {
         memberDto.setEmail("bababrll@naver.com");
         return memberDto;
     }
+
+
 
 }

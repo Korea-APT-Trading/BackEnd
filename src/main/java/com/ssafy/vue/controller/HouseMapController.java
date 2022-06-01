@@ -40,6 +40,7 @@ public class HouseMapController {
 	
 	@GetMapping("/dong")
 	public ResponseEntity<List<HouseInfoDto>> dong(@RequestParam("gugun") String gugun) throws Exception {
+		logger.debug("dong : {}", haHouseMapService.getDongInGugun(gugun));
 		return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.getDongInGugun(gugun), HttpStatus.OK);
 	}
 	
